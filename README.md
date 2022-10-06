@@ -5,15 +5,23 @@
 
 # Usages
 First, make sure you have Python 3.7+. You also need to install all required dependencies:
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
 To initialize SQLite DB (with no data):
-```python main.py initdb```
+```
+python main.py initdb
+```
 
 To start server:
-```python main.py startserver```
+```
+python main.py startserver
+```
 
 With auto-reload:
-```python main.py startserver --dev```
+```
+python main.py startserver --dev
+```
 
 

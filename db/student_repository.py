@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional, Sequence
 from business.domain.student import Student, StudentId, StudentRepository
-from sqlalchemy import DATE, TIMESTAMP, Column, Float, Integer, String
+from sqlalchemy import DATE, TIMESTAMP, Column, Float, Integer, String, Boolean
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.functions import current_timestamp
 
@@ -20,6 +20,7 @@ class StudentRecord(Base):
     final_mark = Column(Float, nullable=False)
     created_at = Column(TIMESTAMP, default=current_timestamp)
     updated_at = Column(TIMESTAMP, default=current_timestamp)
+    is_deleted = Column(Boolean, default=False)
 
     def to_domain(self):
         return Student(
@@ -51,7 +52,7 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
         return [s.to_domain() for s in self.session.query(StudentRecord).all()]
 
     def find_by(self, id: Optional[StudentId] = None, **kwargs) -> Sequence[Student]:
-        by_ = kwargs
+        by_ = {**kwargs, "is_deleted": False}
         if id:
             by_["id"] = id.value
         return self.session.query(StudentRecord).filter_by(**by_).all()
@@ -67,11 +68,17 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
             record.last_name = student.last_name
             record.dob = student.dob
             record.final_mark = student.final_mark
+            record.is_deleted = False
         self.session.commit()
         return record.to_domain()
 
     def remove(self, student: Student):
-        self.session.query(StudentRecord) \
-            .filter_by(id=student.id.value) \
-            .delete(synchronize_session=False)
+        record = (
+            self.session.query(StudentRecord)
+                .filter_by(id=student.id.value)
+                .first()
+        )
+        if not record:
+            raise ValueError("Not found")
+        record.is_deleted = True
         self.session.commit()

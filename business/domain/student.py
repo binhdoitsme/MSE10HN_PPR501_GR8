@@ -10,6 +10,10 @@ class StudentId:
         self.value = value if value else self.__class__.next_value()
 
     @classmethod
+    def set_init_value(cls, val: int):
+        cls._currvalue = val
+
+    @classmethod
     def next_value(cls) -> int:
         cls._currvalue += 1
         return cls._currvalue

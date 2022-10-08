@@ -27,6 +27,7 @@ def setup_services():
         f"sqlite:///{db_path}", connect_args={"check_same_thread": False}
     )
     db_session = Session(bind=engine)
+    _ = db_init.init_student_id(db_session)
     student_repository = StudentRepositoryOnSqlAlchemy(db_session)
     student_service = StudentService(student_repository)
     crawler_service = CrawlerService(f"{HOST}:8000", "/students/list")

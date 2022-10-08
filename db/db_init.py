@@ -1,7 +1,9 @@
 import logging
 import os
 
-from sqlalchemy import Table, create_engine
+from sqlalchemy import Table, create_engine, func
+from sqlalchemy.orm import Session
+from business.domain.student import StudentId
 
 from db.student_repository import StudentRecord
 
@@ -19,3 +21,12 @@ def initialize_db(db_path: str):
     if not student_records.exists(bind=engine):
         student_records.create(bind=engine)
     logger.info("[initialize_db] DB initialization completed!")
+
+
+def init_student_id(session: Session):
+    if StudentId._currvalue > 0:
+        return
+    logger = logging.getLogger(__name__)
+    latest_id = session.query(func.max(StudentRecord.id)).scalar()
+    StudentId.set_init_value(latest_id)
+    logger.info(f"[{__name__}] StudentID updated to {StudentId._currvalue}")

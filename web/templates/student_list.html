@@ -128,10 +128,10 @@
           <td>{{ student.hometown }}</td>
           <td>{{ student.final_mark }}</td>
           <td>
-            <button class="action" data-id="1" onclick="onUpdate(event)">
+            <button class="action" data-id="{{ student.id }}" onclick="onUpdate(event)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
-            <button class="action" data-id="1" onclick="onDelete(event)">
+            <button class="action" data-id="{{ student.id }}" onclick="onDelete(event)">
               <i class="fa-solid fa-trash"></i>
             </button>
           </td>

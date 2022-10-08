@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import Optional, Sequence
 from business.domain.student import Student, StudentId, StudentRepository
 from sqlalchemy import DATE, TIMESTAMP, Column, Float, Integer, String, Boolean
@@ -41,6 +42,8 @@ class StudentRecord(Base):
             dob=student.dob,
             hometown=student.hometown,
             final_mark=student.final_mark,
+            created_at=datetime.now(),
+            updated_at=datetime.now(),
         )
 
 
@@ -69,6 +72,7 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
             record.dob = student.dob
             record.final_mark = student.final_mark
             record.is_deleted = False
+            record.updated_at = datetime.now()
         self.session.commit()
         return record.to_domain()
 

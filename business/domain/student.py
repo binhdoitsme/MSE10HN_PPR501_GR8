@@ -37,7 +37,7 @@ class Student:
             errors.append(f"Invalid first name: {first_name}")
         if not last_name.strip() or len(last_name.strip()) > 20:
             errors.append(f"Invalid last name: {last_name}")
-        if not hometown.strip() or len(hometown.strip()) > 20:
+        if not hometown.strip() or len(hometown.strip()) > 128:
             errors.append(f"Invalid hometown: {hometown}")
         if final_mark < 0 or final_mark > 10:
             errors.append(f"Invalid final mark: {final_mark}")

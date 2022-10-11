@@ -28,5 +28,5 @@ def init_student_id(session: Session):
         return
     logger = logging.getLogger(__name__)
     latest_id = session.query(func.max(StudentRecord.id)).scalar()
-    StudentId.set_init_value(latest_id)
+    StudentId.set_init_value(latest_id or 0)
     logger.info(f"[{__name__}] StudentID updated to {StudentId._currvalue}")

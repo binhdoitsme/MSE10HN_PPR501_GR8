@@ -3,7 +3,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import List, Union
 from bs4 import BeautifulSoup
-import requests
+# import requests
 
 from business.domain.student import Student, StudentId
 

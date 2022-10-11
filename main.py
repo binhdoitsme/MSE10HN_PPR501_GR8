@@ -27,6 +27,7 @@ def setup_services():
         f"sqlite:///{db_path}", connect_args={"check_same_thread": False}
     )
     db_session = Session(bind=engine)
+    _ = db_init.initialize_db(db_path)
     _ = db_init.init_student_id(db_session)
     student_repository = StudentRepositoryOnSqlAlchemy(db_session)
     student_service = StudentService(student_repository)

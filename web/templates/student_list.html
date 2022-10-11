@@ -1,12 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student List</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student List</title>
+  <style>
+    * {
+      font-family: "Fira Mono", "Courier New", Courier, monospace;
+    }
+
+    .center {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flex {
+      display: flex;
+    }
+
+    table.students {
+      width: 60%;
+      min-width: 700px;
+    }
+
+    table {
+      border-collapse: collapse;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid;
+    }
+
+    th,
+    td {
+      padding: 0.25rem;
+    }
+
+    .bottom-margin {
+      margin-bottom: 1rem;
+    }
+
+    button.action {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    button.action:hover {
+      color: blue;
+    }
+  </style>  
+  <script src="https://kit.fontawesome.com/7e157ba8f4.js" crossorigin="anonymous"></script>
+  <script>
+    function formatUrl(baseUrl, id) {
+      return baseUrl.replace("{id}", id);
+    }
+
+    function getId(element) {
+      return element.dataset.id;
+    }
+
+    function onUpdate(e) {
+      const destination = formatUrl(
+        "{{ update_student_link }}", getId(e.currentTarget)
+      );
+      window.location.href = destination;
+    }
+
+    function onDelete(e) {
+      const id = getId(e.currentTarget);
+      const confirmation = confirm(
+        `Delete student with ID ${id}?`
+      );
+      if (!confirmation) {
+        return;
+      }
+      const url = formatUrl("{{ delete_student_link }}", id);
+      fetch(url, { method: "DELETE" })
+        .then((response) => response.json())
+        .catch(() => ({ data: { message: "Unable to reach URL!" } }))
+        .then((json) => json.data)
+        .then((data) => {
+          const { success, message } = data;
+          if (success) {
+            alert(`Deleted student with ID ${id}!`);
+            window.location.reload();
+          } else {
+            alert(`Failed to delete student ${id}, reason: ${message}.`);
+          }
+        })
+    }
+  </script>
 </head>
+
 <body>
-    Student List: {{ message }}
+  <h1 class="title center">Student List</h1>
+  <div class="flex center bottom-margin">
+    <a href="{{ create_student_link }}">Create student</a>
+  </div>
+  <div class="flex center">
+    <table class="students">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Date of Birth</th>
+          <th>Hometown</th>
+          <th>Final mark</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in students %}
+        <tr class="student-info">
+          <td>{{ loop.index }}</td>
+          <td>{{ student.id }}</td>
+          <td>{{ student.first_name }}</td>
+          <td>{{ student.last_name }}</td>
+          <td>{{ student.dob }}</td>
+          <td>{{ student.hometown }}</td>
+          <td>{{ student.final_mark }}</td>
+          <td>
+            <button class="action" data-id="{{ student.id }}" onclick="onUpdate(event)">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button class="action" data-id="{{ student.id }}" onclick="onDelete(event)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </body>
+<script>
+
+</script>
+
 </html>

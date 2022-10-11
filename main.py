@@ -7,15 +7,18 @@ import uvicorn
 from fastapi import FastAPI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
+from api.crawler_api import crawler_api
 
 from api.student_api import student_api
 from business.student_services import StudentService
+from crawler.student_crawler import CrawlerService
 from db import db_init
 from db.student_repository import StudentRepositoryOnSqlAlchemy
 from web.home import home
 from web.student import student_web
 
 DEFAULT_DB = "student.db"
+HOST = "http://127.0.0.1"
 
 
 def setup_services():
@@ -24,14 +27,18 @@ def setup_services():
         f"sqlite:///{db_path}", connect_args={"check_same_thread": False}
     )
     db_session = Session(bind=engine)
+    _ = db_init.init_student_id(db_session)
     student_repository = StudentRepositoryOnSqlAlchemy(db_session)
-    return StudentService(student_repository)
+    student_service = StudentService(student_repository)
+    crawler_service = CrawlerService(f"{HOST}:8000", "/students/list")
+    return student_service, crawler_service
 
 
 def setup_routers(app: FastAPI):
-    student_service = setup_services()
+    student_service, crawler_service = setup_services()
     app.include_router(student_api(student_service), prefix="/api")
-    app.include_router(student_web())
+    app.include_router(crawler_api(crawler_service), prefix="/crawling")
+    app.include_router(student_web(student_service))
     app.include_router(home())
     return app
 
@@ -40,8 +47,14 @@ def initialize_db(db_file: Optional[str] = None):
     db_init.initialize_db(db_file if db_file else DEFAULT_DB)
 
 
-def perform_standalone_crawling(*args, **kwargs):
-    ...
+def perform_standalone_crawling(**kwargs):
+    _, crawler_service = setup_services()
+    output_path = kwargs.get("output", "students.txt")
+    with open(output_path, mode="w+") as handler:
+        handler.write(crawler_service.crawl())
+        handler.flush()
+    print("crawling completed!")
+
 
 
 def __help__():

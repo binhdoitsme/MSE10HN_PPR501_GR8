@@ -1,13 +1,14 @@
 from functools import lru_cache
 
-from fastapi.routing import APIRouter
+from business.student_services import StudentService
 from fastapi.requests import Request
 from fastapi.responses import HTMLResponse
+from fastapi.routing import APIRouter
 from fastapi.templating import Jinja2Templates
 
 
 @lru_cache
-def student_web():
+def student_web(service: StudentService):
     router = APIRouter(prefix="/students")
     templates = Jinja2Templates(directory="web/templates")
 
@@ -15,7 +16,14 @@ def student_web():
 
     @router.get("/list", response_class=HTMLResponse)
     def student_list(request: Request):
-        ...
+        context = {
+            "request": request,
+            "create_student_link": "/students/create",
+            "update_student_link": "/students/update?id={id}",
+            "delete_student_link": "/api/students/{id}",
+            "students": service.get_all_students(),
+        }
+        return templates.TemplateResponse(student_list_template, context)
 
     @router.get("/create", response_class=HTMLResponse)
     def create_student_form():

@@ -31,7 +31,9 @@ def failure_with_reason(reason: str) -> Response:
 def json_on_success(func: Callable[..., BaseModel]):
     @wraps(func)
     def handle(*args, **kwargs):
-        return JSONResponse(status_code=200, content=func(*args, **kwargs).dict())
+        result = func(*args, **kwargs)
+        content = result.dict() if hasattr(result, "dict") else {"data": {}}
+        return JSONResponse(status_code=200, content=content)
 
     return handle
 

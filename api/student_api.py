@@ -22,7 +22,7 @@ def student_api(service: StudentService):
         all_students = service.get_all_students()
         return success_with_data(all_students)
 
-    @router.get("/{id}")
+    @router.get("/{id:int}")
     @default_exception_handling
     @json_on_success
     def get_student_by_id(id: int) -> Response:
@@ -34,13 +34,13 @@ def student_api(service: StudentService):
     def create_student(form: StudentForm) -> Response:
         ...
 
-    @router.put("/{id}")
+    @router.put("/{id:int}")
     @default_exception_handling
     @json_on_success
     def update_student(id: int, form: StudentForm) -> Response:
         ...
 
-    @router.delete("/{id}")
+    @router.delete("/{id:int}")
     @default_exception_handling
     @json_on_success
     def delete_student(id: int) -> Response:

@@ -61,15 +61,80 @@
   </style>
   <script src="https://kit.fontawesome.com/7e157ba8f4.js" crossorigin="anonymous"></script>
   <script>
-    let student = {
-      firstName: '',
-      lastName: '',
-      dob: '',
-      homeTown: '',
-      mark: ''
-    }
+
     function formatUrl(baseUrl, id) {
       return baseUrl.replace("{id}", id);
+    }
+
+    function getData() {
+      const form = document.getElementById('create_student');
+      const data_student = new FormData(form)
+      const student = Object.fromEntries(data_student)
+      student.final_mark = parseFloat(student.final_mark)
+      if (student.id) {
+        student.id = parseInt(student.id)
+      } else {
+        delete student.id
+      }
+      console.log(student)
+      if (!student.first_name || !student.last_name || !student.hometown || !student.dob){
+        alert("please enter all field!!!")
+        return;
+      }
+      return student;
+    }
+
+    function addStudent(event) {
+      event.preventDefault();
+      const studentID = document.getElementById('id').value;
+      if (studentID) {
+        alert("studentID already exist, edit only!!!")
+        return;
+      }
+      const url = "/api/students"
+      fetch(url, {
+        method: "POST", headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(getData())
+      })
+        .then((response) => response.json())
+        .catch(() => ({ data: { message: "Unable to reach URL!" } }))
+        .then((data) => {
+          const { success, message } = data;
+          console.log(data)
+          if (success) {
+            alert(`Add student successfully!`);
+            window.location.reload();
+          } else {
+            alert(`Failed to add, reason: ${data.data.reason}.`);
+          }
+        })
+
+    }
+
+    function editStudent(event) {
+      event.preventDefault();
+      const student = getData()
+      const url = `/api/students/${student.id}`
+      fetch(url, {
+        method: "PUT", headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(student)
+      })
+        .then((response) => response.json())
+        .catch(() => ({ data: { message: "Unable to reach URL!" } }))
+        .then((data) => {
+          const { success, message } = data;
+          console.log(data)
+          if (success) {
+            alert(`Update student successfully!`);
+            window.location.reload();
+          } else {
+            alert(`Failed to update student ${student.id}, reason: ${data.data.reason}.`);
+          }
+        })
     }
 
     function getId(element) {
@@ -77,7 +142,14 @@
     }
 
     function onUpdate(event) {
-      console.log(event.currentTarget.dataset)
+      const student = event.currentTarget.dataset;
+      console.log(student)
+      document.getElementById('id').value = student.id;
+      document.getElementById('firstName').value = student.firstName;
+      document.getElementById('lastName').value = student.lastName;
+      document.getElementById('dob').value = student.dob;
+      document.getElementById('hometown').value = student.hometown;
+      document.getElementById('finalMark').value = student.finalMark;
     }
 
     function onDelete(e) {
@@ -92,7 +164,6 @@
       fetch(url, { method: "DELETE" })
         .then((response) => response.json())
         .catch(() => ({ data: { message: "Unable to reach URL!" } }))
-        .then((json) => json.data)
         .then((data) => {
           const { success, message } = data;
           if (success) {
@@ -108,21 +179,23 @@
 
 <body>
   <h1 class="title center">Student List</h1>
-  <form class="form">
+  <form class="form" id="create_student" onsubmit="addStudent(event)">
+    <label>ID:</label>
+    <input readonly type="text" id="id" name="id">
     <label>First name:</label>
-    <input type="text" id="fname">
+    <input type="text" id="firstName" name="first_name">
     <label>Last name:</label>
-    <input type="text" id="lname">
+    <input type="text" id="lastName" name="last_name">
     <label>Date of Birth:</label>
-    <input type="date" id="lname"><br>
+    <input type="date" id="dob" name="dob"><br>
     <br>
     <label>Home Town:</label>
-    <input type="text" id="lname">
+    <input type="text" id="hometown" name="hometown">
     <label>Mark:</label>
-    <input type="text" id="lname"><br>
+    <input type="text" id="finalMark" name="final_mark"><br>
     <br>
-    <input type="submit" value="Add" onclick={}>
-    <input type="submit" value="Edit">
+    <button onclick="addStudent(event)">Add</button>
+    <button onclick="editStudent(event)">Edit</button>
   </form>
 
   <h1 class="title center">Student List</h1>

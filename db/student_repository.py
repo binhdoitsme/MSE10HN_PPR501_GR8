@@ -58,7 +58,7 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
         by_ = {**kwargs, "is_deleted": False}
         if id:
             by_["id"] = id.value
-        return self.session.query(StudentRecord).filter_by(**by_).all()
+        return [s.to_domain() for s in self.session.query(StudentRecord).filter_by(**by_).all()]
 
     def save(self, student: Student) -> Student:
         id = student.id.value

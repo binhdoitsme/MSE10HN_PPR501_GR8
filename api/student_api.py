@@ -26,7 +26,8 @@ def student_api(service: StudentService):
     @default_exception_handling
     @json_on_success
     def get_student_by_id(id: int) -> Response:
-        ...
+        find_student = service.get_student_by_id(id)
+        return success_with_data(find_student)
 
     @router.post("/")
     @default_exception_handling

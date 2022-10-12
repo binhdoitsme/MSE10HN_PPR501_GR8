@@ -61,7 +61,12 @@ class StudentService:
         return [StudentResult.from_(s) for s in self.repository.find()]
 
     def get_student_by_id(self, id: int) -> MaybeStudentResult:
-        ...
+        student_id = StudentId(id)
+        find_student = self.repository.find_by(id=student_id)
+        if len(find_student) == 0:
+            raise ValueError("This Student is not exist")
+        else:
+            return StudentResult.from_(find_student[0])
 
     def create_student(self, form: StudentForm) -> MaybeStudentResult:
         new_student = form.to_student()

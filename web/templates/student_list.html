@@ -54,9 +54,20 @@
     button.action:hover {
       color: blue;
     }
-  </style>  
+
+    form {
+      text-align: center;
+    }
+  </style>
   <script src="https://kit.fontawesome.com/7e157ba8f4.js" crossorigin="anonymous"></script>
   <script>
+    let student = {
+      firstName: '',
+      lastName: '',
+      dob: '',
+      homeTown: '',
+      mark: ''
+    }
     function formatUrl(baseUrl, id) {
       return baseUrl.replace("{id}", id);
     }
@@ -65,11 +76,8 @@
       return element.dataset.id;
     }
 
-    function onUpdate(e) {
-      const destination = formatUrl(
-        "{{ update_student_link }}", getId(e.currentTarget)
-      );
-      window.location.href = destination;
+    function onUpdate(event) {
+      console.log(event.currentTarget.dataset)
     }
 
     function onDelete(e) {
@@ -100,9 +108,25 @@
 
 <body>
   <h1 class="title center">Student List</h1>
-  <div class="flex center bottom-margin">
-    <a href="{{ create_student_link }}">Create student</a>
-  </div>
+  <form class="form">
+    <label>First name:</label>
+    <input type="text" id="fname">
+    <label>Last name:</label>
+    <input type="text" id="lname">
+    <label>Date of Birth:</label>
+    <input type="date" id="lname"><br>
+    <br>
+    <label>Home Town:</label>
+    <input type="text" id="lname">
+    <label>Mark:</label>
+    <input type="text" id="lname"><br>
+    <br>
+    <input type="submit" value="Add" onclick={}>
+    <input type="submit" value="Edit">
+  </form>
+
+  <h1 class="title center">Student List</h1>
+
   <div class="flex center">
     <table class="students">
       <thead>
@@ -128,7 +152,10 @@
           <td>{{ student.hometown }}</td>
           <td>{{ student.final_mark }}</td>
           <td>
-            <button class="action" data-id="{{ student.id }}" onclick="onUpdate(event)">
+            <button class="action" data-id="{{ student.id }}" data-first-name="{{ student.first_name }}"
+              data-first-name="{{ student.first_name }}" data-last-name="{{ student.last_name }}"
+              data-dob="{{ student.dob }}" data-hometown="{{ student.hometown }}"
+              data-final-mark="{{ student.final_mark }}" onclick="onUpdate(event)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
             <button class="action" data-id="{{ student.id }}" onclick="onDelete(event)">

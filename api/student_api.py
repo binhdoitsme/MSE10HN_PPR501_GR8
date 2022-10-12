@@ -32,7 +32,8 @@ def student_api(service: StudentService):
     @default_exception_handling
     @json_on_success
     def create_student(form: StudentForm) -> Response:
-        ...
+        new_student = service.create_student(form=form)
+        return success_with_data(new_student)
 
     @router.put("/{id:int}")
     @default_exception_handling

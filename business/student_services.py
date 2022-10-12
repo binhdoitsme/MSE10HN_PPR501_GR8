@@ -8,7 +8,7 @@ from business.domain.student import Student, StudentId, StudentRepository
 T = TypeVar("T")
 
 
-class StudentForm(NamedTuple):
+class StudentForm(BaseModel):
     id: Optional[int]
     first_name: str
     last_name: str
@@ -22,6 +22,7 @@ class StudentForm(NamedTuple):
             first_name=self.first_name,
             last_name=self.last_name,
             dob=self.dob,
+            hometown=self.hometown,
             final_mark=self.final_mark,
         )
 
@@ -63,7 +64,10 @@ class StudentService:
         ...
 
     def create_student(self, form: StudentForm) -> MaybeStudentResult:
-        ...
+        new_student = form.to_student()
+        save_result = self.repository.save(student = new_student)
+        student_result = StudentResult.from_(save_result)
+        return student_result
 
     def update_student(self, form: StudentForm) -> MaybeStudentResult:
         ...

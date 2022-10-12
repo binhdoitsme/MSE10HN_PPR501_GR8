@@ -39,12 +39,15 @@ def student_api(service: StudentService):
     @default_exception_handling
     @json_on_success
     def update_student(id: int, form: StudentForm) -> Response:
-        ...
+        assert id == form.id,"ID should be equal to ID of Form"
+        updated_student = service.update_student(form=form)
+        return success_with_data(updated_student)
 
     @router.delete("/{id:int}")
     @default_exception_handling
     @json_on_success
     def delete_student(id: int) -> Response:
-        ...
+        deleted_student = service.delete_student(id=id)
+        return success_with_data(deleted_student)
 
     return router

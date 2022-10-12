@@ -52,7 +52,7 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
         self.session = session
 
     def find(self) -> Sequence[Student]:
-        return [s.to_domain() for s in self.session.query(StudentRecord).all()]
+        return [s.to_domain() for s in self.session.query(StudentRecord).filter_by(is_deleted=False).all()]
 
     def find_by(self, id: Optional[StudentId] = None, **kwargs) -> Sequence[Student]:
         by_ = {**kwargs, "is_deleted": False}
@@ -76,10 +76,10 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
         self.session.commit()
         return record.to_domain()
 
-    def remove(self, student: Student):
+    def remove(self, student_id: StudentId):
         record = (
             self.session.query(StudentRecord)
-                .filter_by(id=student.id.value)
+                .filter_by(id=student_id.value)
                 .first()
         )
         if not record:

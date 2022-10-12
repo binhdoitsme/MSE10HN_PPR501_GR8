@@ -70,7 +70,15 @@ class StudentService:
         return student_result
 
     def update_student(self, form: StudentForm) -> MaybeStudentResult:
-        ...
+        updated_student = form.to_student()
+        find_student = self.repository.find_by(id=updated_student.id)
+        if len(find_student) == 0:
+            raise ValueError("This Student is not exist")
+        updated_result = self.repository.save(student=updated_student)
+        student_result = StudentResult.from_(updated_result)
+        return student_result
 
-    def delete_student(self, id: int) -> bool:
-        ...
+
+    def delete_student(self, id: int):
+        student_id = StudentId(id)
+        deleted_result = self.repository.remove(student_id)

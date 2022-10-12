@@ -84,5 +84,5 @@ class StudentRepository(Protocol):
     def save(self, student: Student) -> Student:
         ...
 
-    def remove(self, student: Student):
+    def remove(self, student_id: StudentId):
         ...

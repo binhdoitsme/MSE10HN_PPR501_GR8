@@ -1,5 +1,5 @@
 from datetime import date
-from typing import NamedTuple, Optional, Sequence, TypeVar
+from typing import Optional, Sequence, TypeVar
 
 from pydantic import BaseModel
 

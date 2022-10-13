@@ -24,4 +24,13 @@ With auto-reload:
 python main.py startserver --dev
 ```
 
+To run standalone crawler: First brings up the server, then open another terminal and run the following command:
+```
+python main.py crawl [--output=<output_file>]
+```
+The default output file will be `students.txt`
+
+It is possible to get the crawled file by accessing `http://localhost:8000/crawling/students`
+
+To access student list page: Access `http://localhost:8000/students/list`
 

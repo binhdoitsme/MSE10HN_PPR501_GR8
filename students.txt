@@ -1,0 +1,16 @@
+ID 1 -- Student Binh Do
+++ Date of Birth: 2000-07-19
+++ Hometown: Haiphong
+++ Final mark: 9.7
+
+
+ID 3 -- Student Thuy Duong Hoang
+++ Date of Birth: 1985-01-01
+++ Hometown: HN
+++ Final mark: 9.9
+
+
+ID 4 -- Student Quoc Cuong Luong
+++ Date of Birth: 2000-01-01
+++ Hometown: Hoalac
+++ Final mark: 10.0

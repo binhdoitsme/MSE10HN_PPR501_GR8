@@ -57,6 +57,8 @@
 
     form {
       text-align: center;
+      border: 1px solid black;
+      padding-bottom: 2rem;
     }
   </style>
   <script src="https://kit.fontawesome.com/7e157ba8f4.js" crossorigin="anonymous"></script>
@@ -178,8 +180,8 @@
 </head>
 
 <body>
-  <h1 class="title center">Student List</h1>
   <form class="form" id="create_student" onsubmit="addStudent(event)">
+    <h1 class="title center">Student Form</h1>
     <label>ID:</label>
     <input readonly type="text" id="id" name="id">
     <label>First name:</label>

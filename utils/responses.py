@@ -1,6 +1,6 @@
 from functools import wraps
 import traceback
-from typing import Any, Callable, Generic, TypeVar
+from typing import Callable, Generic, TypeVar
 
 from fastapi.responses import Response as FastAPIResponse, JSONResponse
 from pydantic import BaseModel

@@ -25,12 +25,4 @@ def student_web(service: StudentService):
         }
         return templates.TemplateResponse(student_list_template, context)
 
-    @router.get("/create", response_class=HTMLResponse)
-    def create_student_form():
-        ...
-
-    @router.get("/update", response_class=HTMLResponse)
-    def update_student_form():
-        ...
-
     return router

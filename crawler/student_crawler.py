@@ -13,6 +13,7 @@ PRETTY_FORMAT = """
 ID {id} -- Student {fullname}
 ++ Date of Birth: {dob}
 ++ Hometown: {hometown}
+++ Email: {email}
 ++ Final mark: {final_mark}
 """
 
@@ -22,6 +23,7 @@ def pretty_print(student: Student):
         id=student.id.value,
         fullname=student.fullname,
         dob=student.dob,
+        email=student.email,
         hometown=student.hometown,
         final_mark=student.final_mark,
     )
@@ -44,13 +46,15 @@ class CrawlerService:
             id = int(cells[1].text)
             first_name = cells[2].text
             last_name = cells[3].text
-            dob = datetime.strptime(cells[4].text, "%Y-%m-%d").date()
-            hometown = cells[5].text
-            final_mark = float(cells[6].text)
+            email = cells[4].text
+            dob = datetime.strptime(cells[5].text, "%Y-%m-%d").date()
+            hometown = cells[6].text
+            final_mark = float(cells[7].text)
             student = Student(
                 id=StudentId(id),
                 first_name=first_name,
                 last_name=last_name,
+                email=email,
                 dob=dob,
                 hometown=hometown,
                 final_mark=final_mark,

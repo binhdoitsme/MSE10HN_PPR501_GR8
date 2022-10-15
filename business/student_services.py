@@ -12,6 +12,7 @@ class StudentForm(BaseModel):
     id: Optional[int]
     first_name: str
     last_name: str
+    email: str
     dob: date
     hometown: str
     final_mark: float
@@ -21,6 +22,7 @@ class StudentForm(BaseModel):
             id=StudentId(self.id),
             first_name=self.first_name,
             last_name=self.last_name,
+            email=self.email,
             dob=self.dob,
             hometown=self.hometown,
             final_mark=self.final_mark,
@@ -31,6 +33,7 @@ class StudentResult(BaseModel):
     id: int
     first_name: str
     last_name: str
+    email: str
     dob: str
     hometown: str
     final_mark: float
@@ -41,6 +44,7 @@ class StudentResult(BaseModel):
             id=student.id.value,
             first_name=student.first_name,
             last_name=student.last_name,
+            email=student.email,
             dob=student.dob.strftime("%Y-%m-%d"),
             hometown=student.hometown,
             final_mark=student.final_mark,

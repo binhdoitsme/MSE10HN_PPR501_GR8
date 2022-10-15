@@ -79,7 +79,7 @@
         delete student.id
       }
       console.log(student)
-      if (!student.first_name || !student.last_name || !student.hometown || !student.dob){
+      if (!student.first_name || !student.last_name || !student.hometown || !student.dob || !student.final_mark || !student.email){
         alert("please enter all field!!!")
         return;
       }
@@ -149,6 +149,8 @@
       document.getElementById('id').value = student.id;
       document.getElementById('firstName').value = student.firstName;
       document.getElementById('lastName').value = student.lastName;
+      document.getElementById('email').value = student.email;
+      document.getElementById('lastName').value = student.lastName;
       document.getElementById('dob').value = student.dob;
       document.getElementById('hometown').value = student.hometown;
       document.getElementById('finalMark').value = student.finalMark;
@@ -191,6 +193,8 @@
     <label>Date of Birth:</label>
     <input type="date" id="dob" name="dob"><br>
     <br>
+    <label>Email:</label>
+    <input type="text" id="email" name="email">
     <label>Home Town:</label>
     <input type="text" id="hometown" name="hometown">
     <label>Mark:</label>
@@ -211,6 +215,7 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Date of Birth</th>
+          <th>Email</th>
           <th>Hometown</th>
           <th>Final mark</th>
           <th>Actions</th>
@@ -223,13 +228,14 @@
           <td>{{ student.id }}</td>
           <td>{{ student.first_name }}</td>
           <td>{{ student.last_name }}</td>
+          <td>{{ student.email }}</td>
           <td>{{ student.dob }}</td>
           <td>{{ student.hometown }}</td>
           <td>{{ student.final_mark }}</td>
           <td>
             <button class="action" data-id="{{ student.id }}" data-first-name="{{ student.first_name }}"
               data-first-name="{{ student.first_name }}" data-last-name="{{ student.last_name }}"
-              data-dob="{{ student.dob }}" data-hometown="{{ student.hometown }}"
+              data-dob="{{ student.dob }}" data-hometown="{{ student.hometown }}" data-email="{{ student.email }}"
               data-final-mark="{{ student.final_mark }}" onclick="onUpdate(event)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>

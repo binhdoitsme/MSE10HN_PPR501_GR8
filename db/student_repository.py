@@ -17,6 +17,7 @@ class StudentRecord(Base):
     first_name = Column(String(15), nullable=False)
     last_name = Column(String(15), nullable=False)
     dob = Column(DATE, nullable=False)
+    email = Column(String(1024), nullable=False)
     hometown = Column(String(128), nullable=False)
     final_mark = Column(Float, nullable=False)
     created_at = Column(TIMESTAMP, default=current_timestamp)
@@ -28,6 +29,7 @@ class StudentRecord(Base):
             id=StudentId(self.id),
             first_name=self.first_name,
             last_name=self.last_name,
+            email=self.email,
             dob=self.dob,
             hometown=self.hometown,
             final_mark=self.final_mark,
@@ -39,6 +41,7 @@ class StudentRecord(Base):
             id=student.id.value,
             first_name=student.first_name,
             last_name=student.last_name,
+            email=student.email,
             dob=student.dob,
             hometown=student.hometown,
             final_mark=student.final_mark,
@@ -70,6 +73,7 @@ class StudentRepositoryOnSqlAlchemy(StudentRepository):
             record.first_name = student.first_name
             record.last_name = student.last_name
             record.dob = student.dob
+            record.email = student.email
             record.final_mark = student.final_mark
             record.is_deleted = False
             record.updated_at = datetime.now()

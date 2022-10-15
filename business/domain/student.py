@@ -1,4 +1,5 @@
 from datetime import date
+import re
 from typing import Optional, Protocol, Sequence
 
 
@@ -22,6 +23,7 @@ class Student:
     id: StudentId
     first_name: str
     last_name: str
+    email: str
     dob: date
     hometown: str
     final_mark: float
@@ -31,6 +33,7 @@ class Student:
         cls,
         first_name: str,
         last_name: str,
+        email: str,
         dob: date,
         hometown: str,
         final_mark: float,
@@ -44,6 +47,8 @@ class Student:
             errors.append(f"Invalid hometown: {hometown}")
         if final_mark < 0 or final_mark > 10:
             errors.append(f"Invalid final mark: {final_mark}")
+        if not re.match(r"[\w\d]+@\w+\.\w+", email):
+            errors.append(f"Invalid email: {email}")
         if len(errors) > 0:
             raise ValueError(";".join(errors))
 
@@ -52,16 +57,18 @@ class Student:
         id: StudentId,
         first_name: str,
         last_name: str,
+        email: str,
         dob: date,
         hometown: str,
         final_mark: float,
     ):
         self.__class__.validate_inputs(
-            first_name, last_name, dob, hometown, final_mark
+            first_name, last_name, email, dob, hometown, final_mark
         )
         self.id = id
         self.first_name = first_name
         self.last_name = last_name
+        self.email = email
         self.dob = dob
         self.hometown = hometown
         self.final_mark = final_mark
